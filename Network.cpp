@@ -1,45 +1,56 @@
 #include "Network.h"
 	Network::Network(ifstream& input_file){
+		cout << "----------------\n";
 		cout << "Creating network\n";
-		parse_input(input_file); 	// Creates bridges and lans
-	}
-	void Network::parse_input(ifstream& input_file){
-		cout << "parsing input file\n";
+		cout << "Parsing input file\n";
 		string line;
 		while(getline(input_file, line)){
-			// parse_line(l)
-			Bridge temp_bridge(line);// Creates bridge obj, which gets set up with its lans
-			cout << "parsing line"<< line << endl;
-			bridges.push_back(temp_bridge);   // Add to list of bridges in this network
-			// create_bridge_network();	// After all bridges and respective lans are set up, connect bridges to each other
-			record_lans(line);  		// From raw line, keep unique lan names
+			cout << "Parsing bridge line: "<< line << endl;
+			Bridge temp_bridge(line);				// Creates bridge obj, which gets set up with its lans
+			bridges.push_back(temp_bridge);   		// Add to list of bridges in this network
+			// create_bridge_network(line);				// After all bridges and respective lans are set up, connect bridges to each other
+			record_lans(line);  					// Find unique lan names and associate with bridge
 		}
+		cout << "----------------\n";
 	}
-	void Network::parse_line(string line){
-		cout << "parsing line" << line << endl;
-		Bridge temp_bridge(line);   	// Creates bridge obj, which gets set up with its lans
-		bridges.push_back(temp_bridge);   // Add to list of bridges in this network
-		// create_bridge_network();	// After all bridges and respective lans are set up, connect bridges to each other
-		record_lans(line); 		// From raw line, keep unique lan names
-	}
+	
 	void Network::record_lans(string line){
 		cout << "Recording lans...\n";
-		for(int i = 1; i < line.length(); i++){	// If see letter, denote as a connected lan to bridge
-			// cout << "Looking at item:", line[i];
-			if ((line[i] >= 65 && line[i] <= 90) || (line[i] >= 97 && line[i] <= 122)){  // ASCII for letters (lower and uppercase)
-				// print line[i];
-				// print ord(line[i]);
-				lans.push_back(to_string(line[i]));
+		istringstream line_stream(line);
+		string n;
+		int counter = 0;
+		while(line_stream >> n){							// For each input file line, obtain only LANs and skip the 1st item (bridge id)
+			if(counter > 0){	// Skip bridge ID
+				cout << "\tExamining n: " << n << endl;
+				lans.push_back(n);
 			}
-			else{						// If see non-letter, don't update lan
-				// print ord(line[i]);
-				// continue;
-			}
+			counter++;
 		}
+		// for(int i = 1; i < line.length(); i++){	// If see letter, denote as a connected lan to bridge
+		// 	// cout << "Looking at item:", line[i];
+		// 	if ((line[i] >= 65 && line[i] <= 90) || (line[i] >= 97 && line[i] <= 122)){  // ASCII for letters (lower and uppercase)
+		// 		// print line[i];
+		// 		// print ord(line[i]);
+		// 		lans.push_back(to_string(line[i]));
+		// 	}
+		// 	else{						// If see non-letter, don't update lan
+		// 		// print ord(line[i]);
+		// 		// continue;
+		// 	}
+		// }
 	}
-	void Network::create_bridge_network(){		// Connect bridges from what lan's they share	
+	void Network::create_bridge_network(string line){		// Connect bridges from what lan's they share	
 		cout << "Creating bridge network...\n";
-
+		istringstream line_stream(line);
+		string n;
+		int counter = 0;
+		while(line_stream >> n){							// For each input file line, obtain only LANs and skip the 1st item (bridge id)
+			if(counter > 0){	// Skip bridge ID
+				cout << "\tExamining n: " << n << endl;
+				lans.push_back(n);
+			}
+			counter++;
+		}
 	}
 	void Network::run_commands(Commands c){
 		commands = c.get_commands();

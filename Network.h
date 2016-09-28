@@ -14,12 +14,11 @@ using namespace std;
 struct Network{
 	vector<Bridge> bridges;
 	vector<string> lans;
+	// map<string, vector<int>>
 	vector<string> commands;
 	Network(ifstream& input_file);
-	void parse_input(ifstream& input_file);
-	void parse_line(string line);
 	void record_lans(string line);
-	void create_bridge_network();
+	void create_bridge_network(string line);
 	void run_commands(Commands c);
 	void find_bridge_and_send(int bridge_id);
 	void get_bridge(int bridge_id);

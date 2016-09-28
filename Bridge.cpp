@@ -1,10 +1,17 @@
 #include "Bridge.h"
 
 	Bridge::Bridge(string line){
-		bridge_id = int(line[0]);	// Numeric ID of bridge
+		cout << "Creating bridge..\n";
+		istringstream line_stream(line);
+		int counter = 0;
+		string s;
+		line_stream >> s;
+		bridge_id = stoi(s);
+
+		// bridge_id = int(line[0]);	// Numeric ID of bridge
 		config_message = Config_Message(get_bridge_id(), 0, get_bridge_id());   // Default config message <ID, 0, ID>
 		// cout <<  "Line is:x"<< line "x" << endl;
-		connect_bridge_with_lans(line);
+		// connect_bridge_with_lans(line);
 	}
 	void Bridge::connect_bridge_with_lans(string line){
 		for(int i = 1; i < line.length(); i++){
