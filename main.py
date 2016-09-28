@@ -10,7 +10,6 @@ class Config_Message:
 	def print_config(self):
 		print "<", self.root,",", self.dist_root,",", self.sender,">"
 
-
 class Bridge:
 	def __init__(self, line):
 		self.bridge_id = int(line[0])	# Numeric ID of bridge
@@ -24,12 +23,11 @@ class Bridge:
 		for i in range(1,len(line)):	# If see letter, denote as a connected lan to bridge
 			# print "Looking at item:", line[i]
 			if (ord(line[i]) >= 65 and ord(line[i]) <= 90) or (ord(line[i]) >= 97 and ord(line[i]) <= 122):  # ASCII for letters (lower and uppercase)
-				# print line[i]
-				print ord(line[i])
+				# print ord(line[i])
 				self.lans.extend(line[i])
 			else: 						# If see non-letter, don't update lan
-				print ord(line[i])
-
+				# print ord(line[i])
+				continue
 
 	def get_bridge_id(self):
 		return self.bridge_id
@@ -55,8 +53,13 @@ class Network:
 
 	def parse_input(self, input_file):
 		print "parsing input file"
-		for l in input_file:
-			self.parse_line(l)
+		for line in input_file:
+			# self.parse_line(l)
+			print "parsing line", line
+			temp_bridge = Bridge(line)   	# Creates bridge obj, which gets set up with its lans
+			self.bridges.extend([temp_bridge])   # Add to list of bridges in this network
+			# self.create_bridge_network()	# After all bridges and respective lans are set up, connect bridges to each other
+			self.record_lans(line)  		# From raw line, keep unique lan names
 
 	def parse_line(self, line):
 		print "parsing line", line
@@ -71,10 +74,11 @@ class Network:
 			# print "Looking at item:", line[i]
 			if (ord(line[i]) >= 65 and ord(line[i]) <= 90) or (ord(line[i]) >= 97 and ord(line[i]) <= 122):  # ASCII for letters (lower and uppercase)
 				# print line[i]
-				print ord(line[i])
+				# print ord(line[i])
 				self.lans.extend(line[i])
 			else: 						# If see non-letter, don't update lan
-				print ord(line[i])
+				# print ord(line[i])
+				continue
 
 	def create_bridge_network(self):		# Connect bridges from what lan's they share	
 		print "Creating bridge network..."
