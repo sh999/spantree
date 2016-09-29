@@ -35,7 +35,9 @@
 		config_message.print_config();
 	}
 	void Bridge::print_bridge(){
-		cout << "Bridge #"<< bridge_id << endl;
+		cout << "Bridge #"<< bridge_id << ":";
+		config_message.print_config();
+		cout << endl;
 		cout << "\tLANs:\n";
 		for(int i = 0; i < lans.size(); i++){
 			cout << "\t\t" << lans[i] << endl;

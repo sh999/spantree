@@ -20,11 +20,15 @@ int main(){
 	Network network(lan_input);
 	Commands commands(commands_input);
 	// cout << "Network and commands after parsing:\n";
-	// network.print_network();
+	cout << "---------------\n";
+	cout << "Original network:\n";
+	network.print_network();
 	// cout << "Commands:\n";
 	// commands.print_commands();
-	cout << "Running simulation\n";
+	cout << "Running messages\n";
 	network.run_commands(commands);
+	cout << "End messages. New network\n";
+	network.print_network();
 	lan_input.close();
 	commands_input.close();
 	cout << "end\n";
