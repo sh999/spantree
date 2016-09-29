@@ -7,6 +7,7 @@
 		string s;
 		line_stream >> s;
 		bridge_id = stoi(s);
+		config_message = Config_Message(get_bridge_id(), 0, get_bridge_id());
 	}
 	void Bridge::connect_bridge_with_lans(string line){
 		istringstream line_stream(line);
@@ -29,8 +30,8 @@
 		return bridge_id;
 	}
 	void Bridge::send_bridge(){
-		cout << "Sending from bridge"<< bridge_id << endl;
-		cout << "Bridge's config:\n";
+		cout << "\tSending from bridge"<< bridge_id << endl;
+		cout << "\t\tThis bridge's config:\n\t\t";
 		config_message.print_config();
 	}
 	void Bridge::print_bridge(){

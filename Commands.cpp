@@ -17,6 +17,7 @@
 				nums.push_back(n);
 			}
 		}
+		return nums;
 
 	}
 	void Commands::print_commands(){
