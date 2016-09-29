@@ -15,6 +15,7 @@ struct Bridge{
 	vector<string> lans; 			// What LANs are linked to this bridge
 	set<int> other_bridges; 		// What other bridges are linked to this bridge 
 	map<int, Config_Message> best_msg_on_ports; 	// Best Config message (value) on port int (key)
+	map<int, bool> ports_status;	// True/false for all ports on bridge
 	Config_Message config_message;
 	Bridge(string line);
 	void connect_bridge_with_lans(string line);

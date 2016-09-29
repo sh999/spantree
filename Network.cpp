@@ -80,16 +80,32 @@
 	void Network::change_ports(){
 		cout << "Closing/opening ports...\n";
 		// Denote "best port" first
-		for(int i = 0; i < bridges.size(); i++){
+		for(int i = 0; i < bridges.size(); i++){   // Loop through each bridge
 			cout << "Checking bridge " << bridges[i].get_bridge_id();
 			bridges[i].get_message().print_config();
 			cout << endl;
 			typedef map<int, Config_Message>::iterator bit;
-			for(bit p = bridges[i].best_msg_on_ports.begin(); p != bridges[i].best_msg_on_ports.end(); p++){
-				cout << "\t";
+			for(bit p = bridges[i].best_msg_on_ports.begin(); p != bridges[i].best_msg_on_ports.end(); p++){  // Loop through each bridge's ports
+				cout << "\tPort: ";
 				p->second.print_config();
 				if(bridges[i].get_message().get_root() < p->second.get_root()){
-					cout << ": Own msg is better\n";
+					// cout << "p->first:" << p->first << " ";
+					cout << ": Own root is smaller. Keep open\n";
+					bridges[i].ports_status[p->first] = true;
+				}
+				else if(bridges[i].get_message().get_root() == p->second.get_root()){
+					cout << ": Same root between port and own. ";
+					if(bridges[i].get_message().get_dist_root() < p->second.get_dist_root()){
+						cout << "Own dist_root is smaller. Keep open";
+						bridges[i].ports_status[p->first] = true;
+
+					}
+					else if(bridges[i].get_message().get_dist_root() == p->second.get_dist_root()){
+						if(bridges[i].get_message().get_sender() < p->second.get_sender()){
+							cout << "Same dist from root. Sender ID is smaller. Keep open";
+							bridges[i].ports_status[p->first] = true;
+						}
+					}
 				}
 				cout << endl;
 

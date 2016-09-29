@@ -77,6 +77,7 @@
 		other_bridges.insert(b.get_bridge_id());
 		Config_Message c(999,999,999);
 		best_msg_on_ports[b.get_bridge_id()] = c;
+		ports_status[b.get_bridge_id()] = true;		// Set ports to open as neighbors are decided initially
 	}
 	int Bridge::get_bridge_id(){
 		return bridge_id;
