@@ -19,10 +19,10 @@ int main(){
 	commands_input.open("./com");
 	Network network(lan_input);
 	Commands commands(commands_input);
-	cout << "Network and commands after parsing:\n";
-	network.print_network();
-	cout << "Commands:\n";
-	commands.print_commands();
+	// cout << "Network and commands after parsing:\n";
+	// network.print_network();
+	// cout << "Commands:\n";
+	// commands.print_commands();
 	cout << "Running simulation\n";
 	network.run_commands(commands);
 	lan_input.close();

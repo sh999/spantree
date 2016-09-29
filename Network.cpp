@@ -5,7 +5,7 @@
 		cout << "Parsing input file\n";
 		string line;
 		while(getline(input_file, line)){
-			cout << "Parsing bridge line: "<< line << endl;  // Parse input file
+			// cout << "Parsing bridge line: "<< line << endl;  // Parse input file
 			Bridge temp_bridge(line);				// Creates bridge obj, which gets set up with its lans
 			temp_bridge.connect_bridge_with_lans(line); // Each bridge will have vector of lans it is connected to
 			bridges.push_back(temp_bridge);   		// Add to list of bridges in this network
@@ -18,7 +18,7 @@
 	}
 	
 	void Network::record_lans(string line){
-		cout << "Recording lans...\n";
+		// cout << "Recording lans...\n";
 		istringstream line_stream(line);
 		string n;
 		int counter = 0;
@@ -26,7 +26,7 @@
 		while(line_stream >> n){							// For each input file line, obtain only LANs and skip the 1st item (bridge id)
 			Bridge some_bridge(line);
 			if(counter > 0){	// Skip bridge ID
-				cout << "\tExamining n: " << n << endl;
+				// cout << "\tExamining n: " << n << endl;
 				lan_map.insert({n,some_bridge});
 				lans.push_back(n);
 			}
@@ -34,13 +34,13 @@
 		}
 	}
 	void Network::create_bridge_network(string line){		// Connect bridges from what lan's they share	
-		cout << "Creating bridge network...\n";
+		// cout << "Creating bridge network...\n";
 		istringstream line_stream(line);
 		string n;
 		int counter = 0;
 		while(line_stream >> n){							// For each input file line, obtain only LANs and skip the 1st item (bridge id)
 			if(counter > 0){	// Skip bridge ID
-				cout << "\tExamining n: " << n << endl;
+				// cout << "\tExamining n: " << n << endl;
 				lans.push_back(n);
 			}
 			counter++;
@@ -55,7 +55,7 @@
 		}
 	}
 	void Network::find_bridge_and_send(int bridge_id){ 	// Send bridge with id i
-		cout << "From network, finding bridge to send:" << bridge_id << endl;
+		// cout << "From network, finding bridge to send:" << bridge_id << endl;
 		get_bridge(bridge_id);
 	}
 	void Network::get_bridge(int bridge_id){  // Given string ID, return bridge obj. with that id
@@ -70,15 +70,15 @@
 		}
 	}
 	void Network::link_neighbors(){
-		cout << "Linking neighboring bridges\n";
+		// cout << "Linking neighboring bridges\n";
 		for(int i = 0; i < bridges.size(); i++){	// Loop each bridge
-			cout << "Finding neighbors of bridge ID" << bridges[i].get_bridge_id() << endl;
+			// cout << "Finding neighbors of bridge ID" << bridges[i].get_bridge_id() << endl;
 			for(int j = 0; j < bridges[i].lans.size(); j++){	// Loop each vector of lans for the bridge
-				cout << "\t Looking at lan " << bridges[i].lans[j] << endl;
+				// cout << "\t Looking at lan " << bridges[i].lans[j] << endl;
 				for(it k = lan_map.begin(); k != lan_map.end(); k++){		// Loop each lan's associated bridge
-					cout << k->first << "-"  << k->second.get_bridge_id() << endl;
+					// cout << k->first << "-"  << k->second.get_bridge_id() << endl;
 					if(k->first == bridges[i].lans[j] && bridges[i].get_bridge_id() != k->second.get_bridge_id()){
-						cout <<"Found neighbor\n";
+						// cout <<"Found neighbor\n";
 						bridges[i].add_neighbors(k->second);
 					}
 				}
