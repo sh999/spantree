@@ -6,23 +6,22 @@
 		string line;
 		while(getline(input_file, line)){
 			// cout << "Parsing bridge line: "<< line << endl;  // Parse input file
-			Bridge temp_bridge(line);				// Creates bridge obj, which gets set up with its lans
+			Bridge temp_bridge(line);					// Creates bridge obj, which gets set up with its lans
 			temp_bridge.connect_bridge_with_lans(line); // Each bridge will have vector of lans it is connected to
-			bridges.push_back(temp_bridge);   		// Add to list of bridges in this network
+			bridges.push_back(temp_bridge);   			// Add to list of bridges in this network
 			// create_bridge_network(line);				// After all bridges and respective lans are set up, connect bridges to each other
-			record_lans(line);  					// Find unique lan names and associate with bridge
+			record_lans(line);  						// Find unique lan names and associate with bridge
 			
 		}
-		link_neighbors();	// Go through bridges and associate each with neighboring bridges
+		link_neighbors();								// Go through bridges and associate each with neighboring bridges
 		cout << "----------------\n";
 	}
 	
-	void Network::record_lans(string line){
+	void Network::record_lans(string line){				// Find unique lan names and associate with bridge
 		// cout << "Recording lans...\n";
 		istringstream line_stream(line);
 		string n;
 		int counter = 0;
-
 		while(line_stream >> n){							// For each input file line, obtain only LANs and skip the 1st item (bridge id)
 			Bridge some_bridge(line);
 			if(counter > 0){	// Skip bridge ID
@@ -78,15 +77,15 @@
 		}
 	}
 
-	void Network::link_neighbors(){
+	void Network::link_neighbors(){												// Link bridges based on what LANs they share
 		// cout << "Linking neighboring bridges\n";
-		for(int i = 0; i < bridges.size(); i++){	// Loop each bridge
+		for(int i = 0; i < bridges.size(); i++){								// Loop each bridge
 			// cout << "Finding neighbors of bridge ID" << bridges[i].get_bridge_id() << endl;
-			for(int j = 0; j < bridges[i].lans.size(); j++){	// Loop each vector of lans for the bridge
+			for(int j = 0; j < bridges[i].lans.size(); j++){					// Loop each vector of lans for the bridge
 				// cout << "\t Looking at lan " << bridges[i].lans[j] << endl;
-				for(it k = lan_map.begin(); k != lan_map.end(); k++){		// Loop each lan's associated bridge
+				for(it k = lan_map.begin(); k != lan_map.end(); k++){			// Loop each lan's associated bridge
 					// cout << k->first << "-"  << k->second.get_bridge_id() << endl;
-					if(k->first == bridges[i].lans[j] && bridges[i].get_bridge_id() != k->second.get_bridge_id()){
+					if(k->first == bridges[i].lans[j] && bridges[i].get_bridge_id() != k->second.get_bridge_id()){  // If LAN name of bridge Y is in bridge X's LAN list and if X, Y are different, add Y as neighbor of X
 						// cout <<"Found neighbor\n";
 						bridges[i].add_neighbors(k->second);
 					}

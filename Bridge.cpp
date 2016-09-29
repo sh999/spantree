@@ -60,6 +60,8 @@
 		// Add neighboring bridges (having same lans) to current bridge
 		// other_bridges.push_back(b);
 		other_bridges.insert(b.get_bridge_id());
+		Config_Message c(999,999,999);
+		best_msg_on_port[b.get_bridge_id()] = c;
 	}
 	int Bridge::get_bridge_id(){
 		return bridge_id;
@@ -83,5 +85,12 @@
 		cout << "\tNeighbors:\n";
 		for(int id: other_bridges){
 			cout << "\t\t" << id << endl;
+		}
+		cout << "\tBest port msg's:\n";
+		typedef map<int, Config_Message>::iterator it;
+		for(it i = best_msg_on_port.begin(); i != best_msg_on_port.end(); i++){
+			cout << "\t\tFrom port/link to bridge " << i->first << ":";
+			i->second.print_config();
+			cout << endl;
 		}
 	}
