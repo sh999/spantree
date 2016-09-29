@@ -67,10 +67,9 @@
 				bridges[i].send_bridge();
 				// bridges[i].get_message();
 				for(int id: bridges[i].other_bridges){
-					cout << "Sending to " << id << endl;
 					for(int j = 0; j < bridges.size(); j++){
 						if(id == bridges[j].get_bridge_id()){
-							cout << "Found bridge to talk to\n";
+							bridges[j].receive_message();
 						}
 					}
 				}
@@ -78,6 +77,7 @@
 			}
 		}
 	}
+
 	void Network::link_neighbors(){
 		// cout << "Linking neighboring bridges\n";
 		for(int i = 0; i < bridges.size(); i++){	// Loop each bridge

@@ -15,6 +15,7 @@ struct Network{
 	typedef multimap<string, Bridge>::iterator it;
 	vector<Bridge> bridges;
 	vector<string> lans;
+
 	multimap<string, Bridge> lan_map;
 	// map<string, vector<int>>
 	vector<string> commands;

@@ -21,6 +21,9 @@
 			counter++;
 		}
 	}
+	void Bridge::receive_message(){
+		cout << "\t\t\tBridge " << get_bridge_id() << " has received message\n";
+	}
 	void Bridge::add_neighbors(Bridge b){
 		// Add neighboring bridges (having same lans) to current bridge
 		// other_bridges.push_back(b);
