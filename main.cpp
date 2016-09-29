@@ -27,4 +27,5 @@ int main(){
 	network.run_commands(commands);
 	lan_input.close();
 	commands_input.close();
+	cout << "end\n";
 }

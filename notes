@@ -1,0 +1,7 @@
+for each line:
+	keep the number for bridge id, save it as b
+	1 continue looking for letters, skip spaces
+		if you see a letter (denoted as L), if it's newly seen, make L a dict key
+			put b as value to to key L
+	goto 1, break if \n
+

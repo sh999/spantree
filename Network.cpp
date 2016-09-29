@@ -5,12 +5,14 @@
 		cout << "Parsing input file\n";
 		string line;
 		while(getline(input_file, line)){
-			cout << "Parsing bridge line: "<< line << endl;
+			cout << "Parsing bridge line: "<< line << endl;  // Parse input file
 			Bridge temp_bridge(line);				// Creates bridge obj, which gets set up with its lans
 			bridges.push_back(temp_bridge);   		// Add to list of bridges in this network
 			// create_bridge_network(line);				// After all bridges and respective lans are set up, connect bridges to each other
 			record_lans(line);  					// Find unique lan names and associate with bridge
+			
 		}
+		link_neighbors();	// Go through bridges and associate each with neighboring bridges
 		cout << "----------------\n";
 	}
 	
@@ -19,9 +21,12 @@
 		istringstream line_stream(line);
 		string n;
 		int counter = 0;
+
 		while(line_stream >> n){							// For each input file line, obtain only LANs and skip the 1st item (bridge id)
+			Bridge some_bridge(line);
 			if(counter > 0){	// Skip bridge ID
 				cout << "\tExamining n: " << n << endl;
+				lan_map.insert({n,some_bridge});
 				lans.push_back(n);
 			}
 			counter++;
@@ -75,9 +80,17 @@
 			}
 		}
 	}
+	void Network::link_neighbors(){
+		cout << "Linking neighboring bridges\n";
+	}
 	void Network::print_network(){
 		for(int i = 0; i < bridges.size(); i++){
 			bridges[i].print_bridge();
+		}
+		typedef multimap<string, Bridge>::iterator it;
+		cout << "Lans:\n";
+		for(it i = lan_map.begin(); i != lan_map.end(); i++){
+			cout << i->first << "-"  << i->second.get_bridge_id() << endl;
 		}
 	}
 

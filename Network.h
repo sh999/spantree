@@ -14,6 +14,7 @@ using namespace std;
 struct Network{
 	vector<Bridge> bridges;
 	vector<string> lans;
+	multimap<string, Bridge> lan_map;
 	// map<string, vector<int>>
 	vector<string> commands;
 	Network(ifstream& input_file);
@@ -22,6 +23,7 @@ struct Network{
 	void run_commands(Commands c);
 	void find_bridge_and_send(int bridge_id);
 	void get_bridge(int bridge_id);
+	void link_neighbors();
 	void print_network();
 };
 #endif

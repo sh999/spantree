@@ -1,4 +1,4 @@
-CFLAGS = -std=c++11  
+CFLAGS = -std=c++11 -g -O0
 
 all: main.bin
 main.bin: main.o Commands.o Config_Message.o Bridge.o Network.o
@@ -13,3 +13,6 @@ Network.o: Network.cpp
 	g++ $(CFLAGS) -c Network.cpp
 main.o: main.cpp
 	g++ $(CFLAGS) -c main.cpp
+clean:
+	rm *bin
+	rm *o
