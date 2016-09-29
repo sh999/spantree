@@ -14,17 +14,21 @@
 		// connect_bridge_with_lans(line);
 	}
 	void Bridge::connect_bridge_with_lans(string line){
-		for(int i = 1; i < line.length(); i++){
-		// for i in range(1,len(line)){	# If see letter, denote as a connected lan to bridge
-			// cout << "Looking at item:", line[i]
-			if ((line[i] >= 65 && line[i] <= 90) || (line[i] >= 97 && line[i] <= 122)){  // ASCII for letters (lower and uppercase)
-				// print ord(line[i])
-				lans.push_back(to_string(line[i]));
+		istringstream line_stream(line);
+		string n;
+		int counter = 0;
+		while(line_stream >> n){							// For each input file line, obtain only LANs and skip the 1st item (bridge id)
+			if(counter > 0){	// Skip bridge ID
+				cout << "\tExamining n: " << n << endl;
+				lans.push_back(n);
 			}
-			else{ 						// If see non-letter, don't update lan
-				// cout << ord(line[i])
-			}
+			counter++;
 		}
+	}
+	void Bridge::add_neighbors(Bridge b){
+		// Add neighboring bridges (having same lans) to current bridge
+		// other_bridges.push_back(b);
+		other_bridges.insert(b.get_bridge_id());
 	}
 	int Bridge::get_bridge_id(){
 		return bridge_id;
@@ -40,4 +44,16 @@
 		for(int i = 0; i < lans.size(); i++){
 			cout << "\t\t" << lans[i] << endl;
 		}
+		cout << "\tNeighbors:\n";
+		for(int id: other_bridges){
+			cout << "\t\t" << id << endl;
+		}
+		// for(int i = 0; i < other_bridges.size(); i++){
+		// 	cout << "\t\t" << other_bridges[i].get_bridge_id() << endl;
+		// }
+		// auto it = other_bridges.cbegin();
+		// while(it != other_bridges.cend()){
+		// 	cout << "\t\t" << it.get_bridge_id() << endl;
+		// 	++it;
+		// }
 	}

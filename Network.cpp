@@ -7,6 +7,7 @@
 		while(getline(input_file, line)){
 			cout << "Parsing bridge line: "<< line << endl;  // Parse input file
 			Bridge temp_bridge(line);				// Creates bridge obj, which gets set up with its lans
+			temp_bridge.connect_bridge_with_lans(line); // Each bridge will have vector of lans it is connected to
 			bridges.push_back(temp_bridge);   		// Add to list of bridges in this network
 			// create_bridge_network(line);				// After all bridges and respective lans are set up, connect bridges to each other
 			record_lans(line);  					// Find unique lan names and associate with bridge
@@ -31,18 +32,6 @@
 			}
 			counter++;
 		}
-		// for(int i = 1; i < line.length(); i++){	// If see letter, denote as a connected lan to bridge
-		// 	// cout << "Looking at item:", line[i];
-		// 	if ((line[i] >= 65 && line[i] <= 90) || (line[i] >= 97 && line[i] <= 122)){  // ASCII for letters (lower and uppercase)
-		// 		// print line[i];
-		// 		// print ord(line[i]);
-		// 		lans.push_back(to_string(line[i]));
-		// 	}
-		// 	else{						// If see non-letter, don't update lan
-		// 		// print ord(line[i]);
-		// 		// continue;
-		// 	}
-		// }
 	}
 	void Network::create_bridge_network(string line){		// Connect bridges from what lan's they share	
 		cout << "Creating bridge network...\n";
@@ -82,12 +71,24 @@
 	}
 	void Network::link_neighbors(){
 		cout << "Linking neighboring bridges\n";
+		for(int i = 0; i < bridges.size(); i++){	// Loop each bridge
+			cout << "Finding neighbors of bridge ID" << bridges[i].get_bridge_id() << endl;
+			for(int j = 0; j < bridges[i].lans.size(); j++){	// Loop each vector of lans for the bridge
+				cout << "\t Looking at lan " << bridges[i].lans[j] << endl;
+				for(it k = lan_map.begin(); k != lan_map.end(); k++){		// Loop each lan's associated bridge
+					cout << k->first << "-"  << k->second.get_bridge_id() << endl;
+					if(k->first == bridges[i].lans[j] && bridges[i].get_bridge_id() != k->second.get_bridge_id()){
+						cout <<"Found neighbor\n";
+						bridges[i].add_neighbors(k->second);
+					}
+				}
+			}
+		}
 	}
 	void Network::print_network(){
 		for(int i = 0; i < bridges.size(); i++){
 			bridges[i].print_bridge();
 		}
-		typedef multimap<string, Bridge>::iterator it;
 		cout << "Lans:\n";
 		for(it i = lan_map.begin(); i != lan_map.end(); i++){
 			cout << i->first << "-"  << i->second.get_bridge_id() << endl;

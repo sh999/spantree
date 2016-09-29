@@ -12,6 +12,7 @@
 using namespace std;
 
 struct Network{
+	typedef multimap<string, Bridge>::iterator it;
 	vector<Bridge> bridges;
 	vector<string> lans;
 	multimap<string, Bridge> lan_map;
