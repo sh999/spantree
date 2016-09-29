@@ -23,12 +23,27 @@
 	}
 	void Bridge::receive_message(Config_Message sender_message){
 		//CHECKPOINT:  deal w/ message
-		cout << "\t\t\tBridge " << get_bridge_id() << " has received message: ";
+		cout << "\n\t\t\tBridge " << get_bridge_id() << " ";
+		config_message.print_config();
+		cout << " has received message: ";
 		sender_message.print_config();
 		if(sender_message.get_root() < config_message.get_root()){
-			cout << "smaller root seen\n";
+			cout << "\n\t\t\t\tsmaller root seen.\n";
 			config_message.set_root(sender_message.get_root());
 			config_message.set_dist_root(sender_message.get_dist_root()+1);
+			cout << "\t\t\t\tSet config message to ";
+			config_message.print_config();
+			cout << endl;
+		}
+		else if (sender_message.get_root() == config_message.get_root()){
+			cout << "\n\t\t\t\tsame root seen\n";
+			if(sender_message.get_dist_root()+1 < config_message.get_dist_root()){
+				cout << "\n\t\t\t\tdist+1 is smaller\n";
+				config_message.set_dist_root(sender_message.get_dist_root()+1);
+			}
+			cout << "\t\t\t\tConfig message is now ";
+			config_message.print_config();
+			cout << endl;
 		}
 	}
 	void Bridge::add_neighbors(Bridge b){
