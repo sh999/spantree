@@ -77,6 +77,26 @@
 		}
 	}
 
+	void Network::change_ports(){
+		cout << "Closing/opening ports...\n";
+		// Denote "best port" first
+		for(int i = 0; i < bridges.size(); i++){
+			cout << "Checking bridge " << bridges[i].get_bridge_id();
+			bridges[i].get_message().print_config();
+			cout << endl;
+			typedef map<int, Config_Message>::iterator bit;
+			for(bit p = bridges[i].best_msg_on_ports.begin(); p != bridges[i].best_msg_on_ports.end(); p++){
+				cout << "\t";
+				p->second.print_config();
+				if(bridges[i].get_message().get_root() < p->second.get_root()){
+					cout << ": Own msg is better\n";
+				}
+				cout << endl;
+
+			}
+		}
+	}
+
 	void Network::link_neighbors(){												// Link bridges based on what LANs they share
 		// cout << "Linking neighboring bridges\n";
 		for(int i = 0; i < bridges.size(); i++){								// Loop each bridge

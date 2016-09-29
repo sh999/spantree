@@ -25,6 +25,7 @@ struct Network{
 	void run_commands(Commands c);
 	void find_bridge_and_send(int bridge_id);
 	void get_bridge(int bridge_id);
+	void change_ports();
 	void link_neighbors();
 	void print_network();
 };

@@ -67,6 +67,9 @@
 			best_msg_on_ports[port] = received_msg;
 			cout << "\t\t\t\tReceived msg is better than previous\n";
 		}
+		else if(received_msg.get_root() == best_msg_on_ports[port].get_root()){
+			cout << "same root\n";
+		}
 	}
 	void Bridge::add_neighbors(Bridge b){
 		// Add neighboring bridges (having same lans) to current bridge
