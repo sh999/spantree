@@ -21,8 +21,15 @@
 			counter++;
 		}
 	}
-	void Bridge::receive_message(){
-		cout << "\t\t\tBridge " << get_bridge_id() << " has received message\n";
+	void Bridge::receive_message(Config_Message sender_message){
+		//CHECKPOINT:  deal w/ message
+		cout << "\t\t\tBridge " << get_bridge_id() << " has received message: ";
+		sender_message.print_config();
+		if(sender_message.get_root() < config_message.get_root()){
+			cout << "smaller root seen\n";
+			config_message.set_root(sender_message.get_root());
+			config_message.set_dist_root(sender_message.get_dist_root()+1);
+		}
 	}
 	void Bridge::add_neighbors(Bridge b){
 		// Add neighboring bridges (having same lans) to current bridge
@@ -36,6 +43,9 @@
 		cout << "\tSending from bridge"<< bridge_id << endl;
 		cout << "\t\tThis bridge's config:\n\t\t";
 		config_message.print_config();
+	}
+	Config_Message Bridge::get_message(){
+		return config_message;
 	}
 	void Bridge::print_bridge(){
 		cout << "Bridge #"<< bridge_id << ":";

@@ -18,9 +18,10 @@ struct Bridge{
 	Bridge(string line);
 	void connect_bridge_with_lans(string line);
 	void add_neighbors(Bridge);
-	void receive_message();
+	void receive_message(Config_Message m);
 	int get_bridge_id();
 	void send_bridge();
 	void print_bridge();
+	Config_Message get_message();
 };
 #endif

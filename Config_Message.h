@@ -14,5 +14,13 @@ struct Config_Message{
 	Config_Message();
 	Config_Message(int x, int y, int z);
 	void print_config();
+	int get_root();
+	int get_dist_root();
+	int get_sender();
+	void set_root(int x);
+	void set_dist_root(int x);
+	void set_sender(int x);
+	
+	
 };
 #endif

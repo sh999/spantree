@@ -69,7 +69,7 @@
 				for(int id: bridges[i].other_bridges){
 					for(int j = 0; j < bridges.size(); j++){
 						if(id == bridges[j].get_bridge_id()){
-							bridges[j].receive_message();
+							bridges[j].receive_message(bridges[i].get_message());
 						}
 					}
 				}
