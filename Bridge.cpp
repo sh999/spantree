@@ -28,7 +28,7 @@
 		cout << " has received message: ";
 		sender_message.print_config();
 		if(sender_message.get_root() < config_message.get_root()){
-			cout << "\n\t\t\t\tsmaller root seen.\n";
+			cout << "\n\t\t\t\tSmaller root seen.  Changing root and distance\n";
 			config_message.set_root(sender_message.get_root());
 			config_message.set_dist_root(sender_message.get_dist_root()+1);
 			cout << "\t\t\t\tSet config message to ";
@@ -36,12 +36,22 @@
 			cout << endl;
 		}
 		else if (sender_message.get_root() == config_message.get_root()){
-			cout << "\n\t\t\t\tsame root seen\n";
+			bool changed = false;
+			// cout << "\n\t\t\t\tsame root seen\n";
 			if(sender_message.get_dist_root()+1 < config_message.get_dist_root()){
-				cout << "\n\t\t\t\tdist+1 is smaller\n";
+				cout << "\n\t\t\t\tDist+1 is smaller\n";
 				config_message.set_dist_root(sender_message.get_dist_root()+1);
+				changed = true;
 			}
-			cout << "\t\t\t\tConfig message is now ";
+			else{
+				changed = false;
+			}
+			if(changed){
+				cout << "\n\t\t\t\tChanging config message to ";
+			}
+			else{
+				cout << "\n\t\t\t\tNot changing own config message ";
+			}
 			config_message.print_config();
 			cout << endl;
 		}
