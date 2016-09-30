@@ -33,4 +33,5 @@ int main(){
 	lan_input.close();
 	commands_input.close();
 	cout << "end\n";
+
 }

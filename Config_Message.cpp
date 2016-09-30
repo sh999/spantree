@@ -7,6 +7,23 @@ Config_Message::Config_Message(int x, int y, int z){
 	dist_root = y;
 	sender = z;
 }
+bool Config_Message::is_better(Config_Message other){
+	// cout << "Checking which message is better\n";
+	if(root < other.get_root()){
+		return true;
+	}
+	else if(root == other.get_root()){
+		if(dist_root < other.get_dist_root()){
+			return true;
+		}
+		else if(dist_root == other.get_dist_root()){
+			if(sender < other.get_sender()){
+				return true;
+			}
+		}
+	}
+	return false;
+}
 void Config_Message::print_config(){
 	cout << "<"<< root<<","<< dist_root<<","<< sender<<">";
 }

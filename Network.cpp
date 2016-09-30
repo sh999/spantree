@@ -46,22 +46,22 @@
 		}
 	}
 	void Network::run_commands(Commands c){
-		commands = c.get_commands();
-		for(int i = 0; i < commands.size(); i++){
-		// for i in commands{
+		commands = c.get_commands();							// Get commands collection
+		for(int i = 0; i < commands.size(); i++){				// Loop through commands and send from the right bridge
+		// for i in commands{	
 			// cout << "Running command", i;
 			find_bridge_and_send(stoi(commands[i]));
 		}
 	}
-	void Network::find_bridge_and_send(int bridge_id){ 	// Send bridge with id i
+	void Network::find_bridge_and_send(int bridge_id){ 			// Send bridge with id i
 		// cout << "From network, finding bridge to send:" << bridge_id << endl;
 		get_bridge(bridge_id);
 	}
-	void Network::get_bridge(int bridge_id){  // Given string ID, return bridge obj. with that id
+	void Network::get_bridge(int bridge_id){ 					 // Given string ID, return bridge obj. with that id
 		for(int i = 0; i < bridges.size(); i++){
 			// cout << "get Bridge ID:", b.get_bridge_id()
 			// cout << "query id:", bridge_id
-			if (bridge_id == bridges[i].get_bridge_id() ){
+			if (bridge_id == bridges[i].get_bridge_id() ){		
 				// cout << "match"
 				bridges[i].send_bridge();
 				// bridges[i].get_message();
@@ -81,36 +81,49 @@
 		cout << "Closing/opening ports...\n";
 		// Denote "best port" first
 		for(int i = 0; i < bridges.size(); i++){   // Loop through each bridge
-			cout << "Checking bridge " << bridges[i].get_bridge_id();
+			cout << "Checking bridge " << bridges[i].get_bridge_id() << ": ";
 			bridges[i].get_message().print_config();
 			cout << endl;
+			Config_Message best_msg(999,999,999);	// "Best" msg seen in all ports of a bridge
 			typedef map<int, Config_Message>::iterator bit;
 			for(bit p = bridges[i].best_msg_on_ports.begin(); p != bridges[i].best_msg_on_ports.end(); p++){  // Loop through each bridge's ports
 				cout << "\tPort: ";
 				p->second.print_config();
-				if(bridges[i].get_message().get_root() < p->second.get_root()){
-					// cout << "p->first:" << p->first << " ";
-					cout << ": Own root is smaller. Keep open\n";
-					bridges[i].ports_status[p->first] = true;
+				bool own_better_than_port = bridges[i].get_message().is_better(p->second);
+				cout << ": Is own config better than port? " << own_better_than_port << endl;
+				if(own_better_than_port){
+					bridges[i].ports_status[p->first] = true;	// Keep port open
 				}
-				else if(bridges[i].get_message().get_root() == p->second.get_root()){
-					cout << ": Same root between port and own. ";
-					if(bridges[i].get_message().get_dist_root() < p->second.get_dist_root()){
-						cout << "Own dist_root is smaller. Keep open";
-						bridges[i].ports_status[p->first] = true;
+				else{
+					if(p->second.is_better(best_msg)){  	// Keep track of "best" port msg
+						best_msg = p->second;
+					}
+				}
+				// if(bridges[i].get_message().get_root() < p->second.get_root()){
+				// 	// cout << "p->first:" << p->first << " ";
+				// 	cout << ": Own root is smaller. Keep open\n";
+				// 	bridges[i].ports_status[p->first] = true;
+				// }
+				// else if(bridges[i].get_message().get_root() == p->second.get_root()){
+				// 	cout << ": Same root between port and own. ";
+				// 	if(bridges[i].get_message().get_dist_root() < p->second.get_dist_root()){
+				// 		cout << "Own dist_root is smaller. Keep open";
+				// 		bridges[i].ports_status[p->first] = true;
 
-					}
-					else if(bridges[i].get_message().get_dist_root() == p->second.get_dist_root()){
-						if(bridges[i].get_message().get_sender() < p->second.get_sender()){
-							cout << "Same dist from root. Sender ID is smaller. Keep open";
-							bridges[i].ports_status[p->first] = true;
-						}
-					}
-				}
+				// 	}
+				// 	else if(bridges[i].get_message().get_dist_root() == p->second.get_dist_root()){
+				// 		if(bridges[i].get_message().get_sender() < p->second.get_sender()){
+				// 			cout << "Same dist from root. Sender ID is smaller. Keep open";
+				// 			bridges[i].ports_status[p->first] = true;
+				// 		}
+				// 	}
+				// }
+				
 				cout << endl;
 
-			}
-		}
+			} // End for loop of ports in bridge
+			cout << "\tBest port: "; best_msg.print_config(); cout << "\n\n";
+		} // End for loop of bridges
 	}
 
 	void Network::link_neighbors(){												// Link bridges based on what LANs they share

@@ -17,9 +17,11 @@ struct Config_Message{
 	int get_root();
 	int get_dist_root();
 	int get_sender();
+	bool is_better(Config_Message c);
 	void set_root(int x);
 	void set_dist_root(int x);
 	void set_sender(int x);
+
 	
 	
 };
