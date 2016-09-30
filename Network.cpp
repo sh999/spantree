@@ -84,8 +84,11 @@
 			cout << "Checking bridge " << bridges[i].get_bridge_id() << ": ";
 			bridges[i].get_message().print_config();
 			cout << endl;
+			int num_better_ports = 0;	// # of ports for a given bridge that has better msg
+			int num_worse_ports = 0;	// # of ports for a given bridge that are worse than own msg
 			Config_Message best_msg(999,999,999);	// "Best" msg seen in all ports of a bridge
 			typedef map<int, Config_Message>::iterator bit;
+			vector<int> ports_to_close;	// Ports to close
 			for(bit p = bridges[i].best_msg_on_ports.begin(); p != bridges[i].best_msg_on_ports.end(); p++){  // Loop through each bridge's ports
 				cout << "\tPort: ";
 				p->second.print_config();
@@ -93,9 +96,12 @@
 				cout << ": Is own config better than port? " << own_better_than_port << endl;
 				if(own_better_than_port){
 					bridges[i].ports_status[p->first] = true;	// Keep port open
+					num_worse_ports++;
 				}
-				else{
-					if(p->second.is_better(best_msg)){  	// Keep track of "best" port msg
+				else{	// Own msg is worse than port's best msg
+					ports_to_close.push_back(p->second.get_sender());	// If worse than port, save that port to potentially close
+					num_better_ports++;
+					if(p->second.is_better(best_msg)){  		// Keep track of "best" port msg
 						best_msg = p->second;
 					}
 				}
@@ -122,7 +128,19 @@
 				cout << endl;
 
 			} // End for loop of ports in bridge
+			// if(ports_to_close.size() == 1){						// This is if the only "better" port is the one leading to root; don't close it
+			// 	ports_to_close.pop_back();
+			// }
+			if(num_worse_ports >= 1){		// If own msg is better than at least one port
+				ports_to_close.erase(remove(ports_to_close.begin(), ports_to_close.end(), 1), ports_to_close.end());
+			}
+			cout << "\tPorts to close:\n";
+			for(int j = 0; j < ports_to_close.size(); j++){
+				cout << "\t" << ports_to_close[j] << endl;
+			}
+			cout << "\t# better ports: " << num_better_ports << endl;
 			cout << "\tBest port: "; best_msg.print_config(); cout << "\n\n";
+			bridges[i].close_ports(ports_to_close);				// Tell each bridge to close the ports
 		} // End for loop of bridges
 	}
 

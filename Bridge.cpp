@@ -71,6 +71,15 @@
 			cout << "same root\n";
 		}
 	}
+
+	void Bridge::close_ports(vector<int> ports){
+		cout << "\tClosing ports...\n";
+		for(int i = 0; i < ports.size(); i++){
+			cout << "\tPort " << ports[i] << " closed\n";
+			ports_status[ports[i]] = false;
+		}
+	}
+
 	void Bridge::add_neighbors(Bridge b){
 		// Add neighboring bridges (having same lans) to current bridge
 		// other_bridges.push_back(b);

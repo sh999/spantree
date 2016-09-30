@@ -22,6 +22,7 @@ struct Bridge{
 	void add_neighbors(Bridge);
 	void receive_message(Config_Message m);
 	void check_port(Config_Message m);		// Check if received msg is better for a given port/link
+	void close_ports(vector<int> ports);
 	int get_bridge_id();
 	void send_bridge();
 	void print_bridge();

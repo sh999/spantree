@@ -24,6 +24,7 @@ bool Config_Message::is_better(Config_Message other){
 	}
 	return false;
 }
+
 void Config_Message::print_config(){
 	cout << "<"<< root<<","<< dist_root<<","<< sender<<">";
 }
