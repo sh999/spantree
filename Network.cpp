@@ -161,12 +161,12 @@
 		}
 	}
 	void Network::print_network(){
-		for(int i = 0; i < bridges.size(); i++){
-			bridges[i].print_bridge();
-		}
 		cout << "Lans:\n";
 		for(it i = lan_map.begin(); i != lan_map.end(); i++){
 			cout << i->first << "-"  << i->second.get_bridge_id() << endl;
+		}
+		for(int i = 0; i < bridges.size(); i++){
+			bridges[i].print_bridge(lan_map);
 		}
 	}
 

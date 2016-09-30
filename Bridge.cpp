@@ -102,23 +102,44 @@
 		return config_message;
 	}
 
-	void Bridge::print_bridge(){
-		cout << "Bridge #"<< bridge_id << ":";
+	void Bridge::print_bridge(multimap<string, Bridge> lan_map){
+		cout << "Bridge #"<< bridge_id << ". Best configuration: ";
 		config_message.print_config();
 		cout << endl;
 		cout << "\tLANs:\n";
+		// for(int i = 0; i < lans.size(); i++){
+		// 	cout << "\t\tto " << lans[i] << endl;
+
+		// }
 		for(int i = 0; i < lans.size(); i++){
-			cout << "\t\t" << lans[i] << endl;
+			string open_closed = "open";
+			typedef multimap<string, Bridge>::iterator bit;
+			for(bit lm_element = lan_map.begin(); lm_element != lan_map.end(); lm_element++){
+				if(lm_element->first == lans[i] && lm_element->second.get_bridge_id() != bridge_id){
+					int port_to_check = lm_element->second.get_bridge_id();
+					// cout << lm_element->first << ".." << lm_element->second.get_bridge_id() << endl;
+					// cout << "Checking status of port " << port_to_check << endl;
+					// cout << "Port open? " << ports_status[port_to_check] << endl;
+					if(ports_status[port_to_check]){
+						open_closed = "open";
+					}
+					else{
+						open_closed = "closed";
+					}
+				}
+			}
+			cout << "\t\tto " << lans[i] << " is " << open_closed << endl;
+
 		}
-		cout << "\tNeighbors:\n";
-		for(int id: other_bridges){
-			cout << "\t\t" << id << endl;
-		}
-		cout << "\tBest port msg's:\n";
-		typedef map<int, Config_Message>::iterator it;
-		for(it i = best_msg_on_ports.begin(); i != best_msg_on_ports.end(); i++){
-			cout << "\t\tFrom port/link to bridge " << i->first << ":";
-			i->second.print_config();
-			cout << endl;
-		}
+		// cout << "\tNeighbors:\n";
+		// for(int id: other_bridges){
+		// 	cout << "\t\t" << id << endl;
+		// }
+		// cout << "\tBest port msg's:\n";
+		// typedef map<int, Config_Message>::iterator it;
+		// for(it i = best_msg_on_ports.begin(); i != best_msg_on_ports.end(); i++){
+		// 	cout << "\t\tFrom port/link to bridge " << i->first << ":";
+		// 	i->second.print_config();
+		// 	cout << endl;
+		// }
 	}

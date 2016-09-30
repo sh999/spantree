@@ -25,7 +25,7 @@ struct Bridge{
 	void close_ports(vector<int> ports);
 	int get_bridge_id();
 	void send_bridge();
-	void print_bridge();
+	void print_bridge(multimap<string, Bridge> lan_map);
 	Config_Message get_message();
 };
 #endif

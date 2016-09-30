@@ -15,8 +15,8 @@ using namespace std;
 int main(){
 	ifstream lan_input;
 	ifstream commands_input;
-	lan_input.open("./lan");
-	commands_input.open("./com");
+	lan_input.open("./lan2");
+	commands_input.open("./commands2");
 	Network network(lan_input);
 	Commands commands(commands_input);
 	// cout << "Network and commands after parsing:\n";
@@ -29,7 +29,7 @@ int main(){
 	network.run_commands(commands);		// Run all commands
 	network.change_ports();				// Decide to keep open or close ports for all bridges
 	cout << "End messages. New network\n";
-	// network.print_network();
+	network.print_network();
 	lan_input.close();
 	commands_input.close();
 	cout << "end\n";
