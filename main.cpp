@@ -15,8 +15,8 @@ using namespace std;
 int main(){
 	ifstream lan_input;
 	ifstream commands_input;
-	lan_input.open("./lan2");
-	commands_input.open("./commands2");
+	lan_input.open("./lan3");
+	commands_input.open("./commands3");
 	Network network(lan_input);
 	Commands commands(commands_input);
 	// cout << "Network and commands after parsing:\n";
@@ -33,5 +33,4 @@ int main(){
 	lan_input.close();
 	commands_input.close();
 	cout << "end\n";
-
 }
