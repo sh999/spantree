@@ -8,6 +8,7 @@
 		line_stream >> s;
 		bridge_id = stoi(s);
 		config_message = Config_Message(get_bridge_id(), 0, get_bridge_id());
+		lone_lans = 0;
 	}
 
 	void Bridge::connect_bridge_with_lans(string line){

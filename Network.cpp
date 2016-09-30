@@ -86,6 +86,8 @@
 			cout << endl;
 			int num_better_ports = 0;	// # of ports for a given bridge that has better msg
 			int num_worse_ports = 0;	// # of ports for a given bridge that are worse than own msg
+			cout << "Lone lans:" << bridges[i].lone_lans << endl;
+			num_worse_ports = num_worse_ports + bridges[i].lone_lans;
 			Config_Message best_msg(999,999,999);	// "Best" msg seen in all ports of a bridge
 			typedef map<int, Config_Message>::iterator bit;
 			vector<int> ports_to_close;	// Ports to close
@@ -150,8 +152,13 @@
 			// cout << "Finding neighbors of bridge ID" << bridges[i].get_bridge_id() << endl;
 			for(int j = 0; j < bridges[i].lans.size(); j++){					// Loop each vector of lans for the bridge
 				// cout << "\t Looking at lan " << bridges[i].lans[j] << endl;
+				cout << "LAN SIZE: " << lan_map.count(bridges[i].lans[j]) << endl;
+				if (lan_map.count(bridges[i].lans[j]) == 1){
+					bridges[i].lone_lans++;
+				}  
 				for(it k = lan_map.begin(); k != lan_map.end(); k++){			// Loop each lan's associated bridge
 					// cout << k->first << "-"  << k->second.get_bridge_id() << endl;
+					
 					if(k->first == bridges[i].lans[j] && bridges[i].get_bridge_id() != k->second.get_bridge_id()){  // If LAN name of bridge Y is in bridge X's LAN list and if X, Y are different, add Y as neighbor of X
 						// cout <<"Found neighbor\n";
 						bridges[i].add_neighbors(k->second);
